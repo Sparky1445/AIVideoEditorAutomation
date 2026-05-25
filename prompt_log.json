@@ -96,6 +96,38 @@
     "summary": "Explained pacing.js: reads scene timestamps from detectScenes(), computes avgCutSeconds, variance (std deviation), and assigns a style label (fast-cut / medium / cinematic) to enable editing pace cloning from sample videos"
   },
   {
+    "id": 17,
+    "label": "Error",
+    "title": "analyseSamples — avgCutSeconds: null (Infinity from single-scene detection)",
+    "date": "2026-05-25",
+    "time": "auto",
+    "summary": "avgCutSeconds was null because detectScenes() returned only [{start:0,end:Infinity}] with default threshold 0.3. JSON.stringify(Infinity) produces null. Fixed by lowering threshold to 0.1 in pacing.js and adding isFinite(d) guard to duration filter"
+  },
+  {
+    "id": 16,
+    "label": "Error",
+    "title": "colorgrade.py — File Not Found + analyse vs analyze Spelling Mismatch",
+    "date": "2026-05-25",
+    "time": "auto",
+    "summary": "Two issues: (1) colorgrade.py had not been created on disk yet. (2) analyser.js hardcoded 'src/analyse/' but user's folder is named 'src/analyze/' (American spelling). Fixed by creating the file and updating the path in analyzer.js"
+  },
+  {
+    "id": 15,
+    "label": "Error",
+    "title": "analyser.js — Missing src/utils.js (execP not found)",
+    "date": "2026-05-25",
+    "time": "auto",
+    "summary": "analyser.js requires execP from '../utils' but the file didn't exist. Fixed by creating src/utils.js with a promisified wrapper around child_process.exec"
+  },
+  {
+    "id": 14,
+    "label": "Explanation",
+    "title": "Week 2 Milestone — How to Test Style Analyser (analyseSamples)",
+    "date": "2026-05-25",
+    "time": "auto",
+    "summary": "Explained how to test Week 2: prerequisites (pip install opencv-python, sample video in input/), test node one-liner, expected JSON output, multi-sample usage, and common errors (python path, cv2 not found, JSON parse error)"
+  },
+  {
     "id": 13,
     "label": "Explanation",
     "title": "colorgrade.py — Purpose, Logic & Flowchart",

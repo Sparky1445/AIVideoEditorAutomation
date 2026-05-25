@@ -4,7 +4,11 @@ async function analysePacing(samplePath) {
     const scenes = await detectScenes(samplePath);
     const durations = scenes
         .map((s, i) => (scenes[i + 1]?.start ?? s.end) - s.start)
-        .filter(d => d > 0);
+        .filter(d => d > 0 && isFinite(d));
+
+    if (durations.length === 0) {
+        return { avgCutSeconds: null, variance: null, style: "Unknown", totalScenes: 1 };
+    }
 
     const avg = durations.reduce((a, b) => a + b, 0) / durations.length;
     const variance = Math.sqrt(

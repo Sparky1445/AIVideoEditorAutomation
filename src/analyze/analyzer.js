@@ -1,5 +1,5 @@
-const { execP } = require('../utils');
-const { analysePacing } = require('./pacing');
+const { execP } = require('../utils.js');
+const { analysePacing } = require('./pacing.js');
 
 async function analyseSamples(samplePaths) {
     // Average style across all sample videos
@@ -7,7 +7,7 @@ async function analyseSamples(samplePaths) {
     const avgCut = pacings.reduce((a, b) => a + b.avgCutSeconds, 0) / pacings.length;
 
     // Run Python colour analyser on first sample
-    const { stdout } = await execP(`python src/analyse/colorgrade.py "${samplePaths[0]}"`);
+    const { stdout } = await execP(`python src/analyze/colorgrade.py "${samplePaths[0]}"`);
     const color = JSON.parse(stdout);
 
     return {
