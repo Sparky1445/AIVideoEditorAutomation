@@ -1,0 +1,106 @@
+[
+  {
+    "id": 1,
+    "label": "Explanation",
+    "title": "ingest.js Purpose & Logic",
+    "date": "2026-05-25",
+    "time": "auto",
+    "summary": "Asked for an explanation of ingest.js — its purpose, logic, and flowchart of how it works"
+  },
+  {
+    "id": 2,
+    "label": "Error",
+    "title": "canvas npm install Failure (node-gyp / Missing C++ Toolset)",
+    "date": "2026-05-25",
+    "time": "auto",
+    "summary": "npm install failed on the canvas package because Visual Studio is missing the Desktop development with C++ workload. Fixed by switching to @napi-rs/canvas"
+  },
+  {
+    "id": 3,
+    "label": "Error",
+    "title": "ffprobe Command Failed — Empty JSON stdout",
+    "date": "2026-05-25",
+    "time": "auto",
+    "summary": "ingestVideo() threw an error because -v quiet hid the real ffprobe message. Root cause: myvideo.mp4 did not exist in the project root"
+  },
+  {
+    "id": 4,
+    "label": "Error",
+    "title": "ffprobe — No Such File or Directory",
+    "date": "2026-05-25",
+    "time": "auto",
+    "summary": "After removing -v quiet, confirmed the file myvideo.mp4 simply did not exist at the path being passed to ffprobe"
+  },
+  {
+    "id": 5,
+    "label": "Changes",
+    "title": "ingest.js — Auto-prepend input/ Folder to File Path",
+    "date": "2026-05-25",
+    "time": "auto",
+    "summary": "Changed ingestVideo() to accept just a filename and automatically prepend the input/ folder using path.join()"
+  },
+  {
+    "id": 6,
+    "label": "Changes",
+    "title": "prompt_log_viewer.html — Fix Zero Counts (Embed Data Instead of Fetch)",
+    "date": "2026-05-25",
+    "time": "auto",
+    "summary": "Viewer showed 0 counts because fetch() is blocked on file:// protocol. Fixed by embedding LOG_DATA directly in the HTML script tag"
+  },
+  {
+    "id": 7,
+    "label": "Changes",
+    "title": "Canvas Import — Switch from canvas to @napi-rs/canvas",
+    "date": "2026-05-25",
+    "time": "auto",
+    "summary": "Updated require('canvas') to require('@napi-rs/canvas') across the project to use the pre-built Windows-compatible package"
+  },
+  {
+    "id": 8,
+    "label": "Explanation",
+    "title": "scenes.js — Purpose, Logic & Flowchart",
+    "date": "2026-05-25",
+    "time": "auto",
+    "summary": "Asked for an explanation of scenes.js similar to the ingest.js breakdown — covering purpose, FFmpeg scene filter, stderr parsing, threshold, and output format"
+  },
+  {
+    "id": 9,
+    "label": "Explanation",
+    "title": "scenes.js — Re-explained in Plain Text with Flowchart",
+    "date": "2026-05-25",
+    "time": "auto",
+    "summary": "Same explanation as #8 but in plain Claude format with inline SVG flowchart only — no HTML file created"
+  },
+  {
+    "id": 10,
+    "label": "Error",
+    "title": "scenes.js — detectScenes() Returns Only [{start:0, end:Infinity}]",
+    "date": "2026-05-25",
+    "time": "auto",
+    "summary": "Two causes: (1) /dev/null doesn't exist on Windows — fixed by changing to NUL. (2) Default threshold 0.3 too strict for footage with gradual changes — lowering to 0.1 resolved it. Advised stepping up slowly to find the right value."
+  },
+  {
+    "id": 11,
+    "label": "Explanation",
+    "title": "Orchestrator Prompt Additions — Points 3 & 4 (Auto-Suggest + Doodle Input)",
+    "date": "2026-05-25",
+    "time": "auto",
+    "summary": "Explained what to add to the Claude orchestrator system prompt to support auto-suggestion of additional editing techniques (Point 3) and doodle/stickman theme input wiring (Point 4)"
+  },
+  {
+    "id": 12,
+    "label": "Explanation",
+    "title": "pacing.js — Purpose, Logic & Flowchart",
+    "date": "2026-05-25",
+    "time": "auto",
+    "summary": "Explained pacing.js: reads scene timestamps from detectScenes(), computes avgCutSeconds, variance (std deviation), and assigns a style label (fast-cut / medium / cinematic) to enable editing pace cloning from sample videos"
+  },
+  {
+    "id": 13,
+    "label": "Explanation",
+    "title": "colorgrade.py — Purpose, Logic & Flowchart",
+    "date": "2026-05-25",
+    "time": "auto",
+    "summary": "Explained colorgrade.py: samples 30 frames from a video, converts each to LAB colour space, computes brightness (L channel) and warmth (B channel − 128), then recommends a LUT file (warm_cinematic / cool_clean / neutral_grade) for FFmpeg to apply to the main video"
+  }
+]

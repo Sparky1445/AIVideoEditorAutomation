@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<title>Prompt Log — AI Video Editor</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', Arial, sans-serif; background: #F4F6FF; color: #1a1a2e; }
+
+  header {
+    background: linear-gradient(135deg, #1A237E, #3949AB);
+    color: white; padding: 28px 36px;
+  }
+  header h1 { font-size: 24px; font-weight: 800; }
+  header p  { font-size: 13px; opacity: .8; margin-top: 4px; }
+
+  .controls {
+    display: flex; gap: 10px; padding: 20px 36px;
+    background: white; border-bottom: 1px solid #E0E0E0;
+    flex-wrap: wrap; align-items: center;
+  }
+  .filter-btn {
+    padding: 8px 20px; border-radius: 20px; border: 2px solid #C5CAE9;
+    background: white; color: #3949AB; font-weight: 600; font-size: 13px;
+    cursor: pointer; transition: all .2s;
+  }
+  .filter-btn.active, .filter-btn:hover { background: #1A237E; color: white; border-color: #1A237E; }
+  .filter-btn.error.active   { background: #C62828; border-color: #C62828; }
+  .filter-btn.explanation.active { background: #1565C0; border-color: #1565C0; }
+  .filter-btn.changes.active { background: #2E7D32; border-color: #2E7D32; }
+
+  .search {
+    margin-left: auto; padding: 8px 14px; border: 2px solid #C5CAE9;
+    border-radius: 20px; font-size: 13px; outline: none; width: 220px;
+  }
+  .search:focus { border-color: #3949AB; }
+
+  .stats {
+    display: flex; gap: 16px; padding: 16px 36px; flex-wrap: wrap;
+  }
+  .stat {
+    background: white; border-radius: 10px; padding: 12px 20px;
+    border: 1px solid #E0E0E0; display: flex; align-items: center; gap: 10px;
+    box-shadow: 0 1px 4px rgba(0,0,0,.05);
+  }
+  .stat-dot { width: 12px; height: 12px; border-radius: 50%; }
+  .stat-label { font-size: 12px; color: #777; }
+  .stat-count { font-size: 20px; font-weight: 800; }
+
+  .list { padding: 0 36px 40px; display: flex; flex-direction: column; gap: 12px; }
+
+  .entry {
+    background: white; border-radius: 12px; padding: 18px 22px;
+    border: 1px solid #E0E0E0; box-shadow: 0 1px 4px rgba(0,0,0,.05);
+    display: flex; gap: 16px; align-items: flex-start;
+    transition: box-shadow .2s;
+  }
+  .entry:hover { box-shadow: 0 4px 16px rgba(26,35,126,.1); }
+  .entry.hidden { display: none; }
+
+  .entry-badge {
+    border-radius: 8px; padding: 6px 14px; font-size: 12px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: .5px; flex-shrink: 0; min-width: 100px;
+    text-align: center;
+  }
+  .badge-Error       { background: #FFEBEE; color: #C62828; border: 1px solid #FFCDD2; }
+  .badge-Explanation { background: #E3F2FD; color: #1565C0; border: 1px solid #BBDEFB; }
+  .badge-Changes     { background: #E8F5E9; color: #2E7D32; border: 1px solid #C8E6C9; }
+
+  .entry-body { flex: 1; }
+  .entry-title { font-size: 15px; font-weight: 700; color: #1A237E; margin-bottom: 4px; }
+  .entry-summary { font-size: 13px; color: #555; line-height: 1.5; }
+  .entry-meta { font-size: 11px; color: #999; margin-top: 6px; }
+  .entry-id { font-size: 11px; color: #BBBBBB; font-weight: 700; flex-shrink: 0; padding-top: 6px; }
+
+  .empty { text-align: center; padding: 60px; color: #999; font-size: 15px; display: none; }
+
+  .how-to {
+    background: #E8F0FE; border-left: 4px solid #3949AB; border-radius: 8px;
+    padding: 14px 20px; margin: 0 36px 20px; font-size: 13px; color: #1A237E;
+    line-height: 1.7;
+  }
+  .how-to strong { font-weight: 700; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>📋 Prompt Log — AI Video Editor</h1>
+  <p>All help requests, categorized by type. Updated by Claude after every response.</p>
+</header>
+
+<div class="controls">
+  <button class="filter-btn active" onclick="filter('all', this)">All</button>
+  <button class="filter-btn error"       onclick="filter('Error', this)">🔴 Errors</button>
+  <button class="filter-btn explanation" onclick="filter('Explanation', this)">🔵 Explanations</button>
+  <button class="filter-btn changes"     onclick="filter('Changes', this)">🟢 Changes</button>
+  <input class="search" type="text" placeholder="🔍 Search entries..." oninput="search(this.value)"/>
+</div>
+
+<div class="stats" id="stats"></div>
+
+<div class="how-to">
+  <strong>How to use:</strong> Start your message to Claude with <strong>Error:</strong>, <strong>Explanation:</strong>, or <strong>Changes:</strong> and Claude will automatically log it here with a title and timestamp. If you forget the label, Claude will auto-categorize it. Ask Claude <em>"show me all Error prompts"</em> to see a filtered view anytime.
+</div>
+
+<div class="list" id="list"></div>
+<div class="empty" id="empty">No entries match this filter.</div>
+
+<script>
+// ── EMBEDDED LOG DATA — Claude updates this block on every new entry ──────────
+const LOG_DATA = [
+  {
+    "id": 1,
+    "label": "Explanation",
+    "title": "ingest.js Purpose & Logic",
+    "date": "2026-05-25",
+    "time": "auto",
+    "summary": "Asked for an explanation of ingest.js — its purpose, logic, and flowchart of how it works"
+  },
+  {
+    "id": 2,
+    "label": "Error",
+    "title": "canvas npm install Failure (node-gyp / Missing C++ Toolset)",
+    "date": "2026-05-25",
+    "time": "auto",
+    "summary": "npm install failed on the canvas package because Visual Studio is missing the Desktop development with C++ workload. Fixed by switching to @napi-rs/canvas"
+  },
+  {
+    "id": 3,
+    "label": "Error",
+    "title": "ffprobe Command Failed — Empty JSON stdout",
+    "date": "2026-05-25",
+    "time": "auto",
+    "summary": "ingestVideo() threw an error because -v quiet hid the real ffprobe message. Root cause: myvideo.mp4 did not exist in the project root"
+  },
+  {
+    "id": 4,
+    "label": "Error",
+    "title": "ffprobe — No Such File or Directory",
+    "date": "2026-05-25",
+    "time": "auto",
+    "summary": "After removing -v quiet, confirmed the file myvideo.mp4 simply did not exist at the path being passed to ffprobe"
+  },
+  {
+    "id": 5,
+    "label": "Changes",
+    "title": "ingest.js — Auto-prepend input/ Folder to File Path",
+    "date": "2026-05-25",
+    "time": "auto",
+    "summary": "Changed ingestVideo() to accept just a filename and automatically prepend the input/ folder using path.join()"
+  },
+  {
+    "id": 6,
+    "label": "Changes",
+    "title": "prompt_log_viewer.html — Fix Zero Counts (Embed Data Instead of Fetch)",
+    "date": "2026-05-25",
+    "time": "auto",
+    "summary": "Viewer showed 0 counts because fetch() is blocked on file:// protocol. Fixed by embedding LOG_DATA directly in the HTML script tag"
+  },
+  {
+    "id": 7,
+    "label": "Changes",
+    "title": "Canvas Import — Switch from canvas to @napi-rs/canvas",
+    "date": "2026-05-25",
+    "time": "auto",
+    "summary": "Updated require('canvas') to require('@napi-rs/canvas') across the project to use the pre-built Windows-compatible package"
+  }
+];
+// ─────────────────────────────────────────────────────────────────────────────
+
+let allEntries = [];
+let currentFilter = 'all';
+let currentSearch = '';
+
+function loadLog() {
+  // Data is embedded directly — no fetch needed (works with file:// protocol)
+  allEntries = LOG_DATA;
+  renderStats();
+  renderList();
+}
+
+function renderStats() {
+  const counts = { Error: 0, Explanation: 0, Changes: 0 };
+  allEntries.forEach(e => counts[e.label] = (counts[e.label] || 0) + 1);
+  const colors = { Error: '#C62828', Explanation: '#1565C0', Changes: '#2E7D32' };
+  document.getElementById('stats').innerHTML = `
+    <div class="stat">
+      <div class="stat-dot" style="background:#666"></div>
+      <div><div class="stat-label">Total</div><div class="stat-count">${allEntries.length}</div></div>
+    </div>
+    ${Object.entries(counts).map(([k,v]) => `
+      <div class="stat">
+        <div class="stat-dot" style="background:${colors[k]}"></div>
+        <div><div class="stat-label">${k}</div><div class="stat-count">${v}</div></div>
+      </div>
+    `).join('')}
+  `;
+}
+
+function renderList() {
+  const filtered = allEntries.filter(e => {
+    const matchFilter = currentFilter === 'all' || e.label === currentFilter;
+    const matchSearch = !currentSearch ||
+      e.title.toLowerCase().includes(currentSearch) ||
+      e.summary.toLowerCase().includes(currentSearch) ||
+      e.label.toLowerCase().includes(currentSearch);
+    return matchFilter && matchSearch;
+  });
+
+  const list = document.getElementById('list');
+  list.innerHTML = filtered.length === 0 ? '' : filtered.slice().reverse().map(e => `
+    <div class="entry">
+      <div class="entry-id">#${e.id}</div>
+      <div class="entry-badge badge-${e.label}">${e.label === 'Explanation' ? '🔵' : e.label === 'Error' ? '🔴' : '🟢'} ${e.label}</div>
+      <div class="entry-body">
+        <div class="entry-title">${e.title}</div>
+        <div class="entry-summary">${e.summary}</div>
+        <div class="entry-meta">📅 ${e.date} ${e.time !== 'auto' ? '· ⏰ ' + e.time : ''}</div>
+      </div>
+    </div>
+  `).join('');
+
+  document.getElementById('empty').style.display = filtered.length === 0 ? 'block' : 'none';
+}
+
+function filter(label, btn) {
+  currentFilter = label;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderList();
+}
+
+function search(val) {
+  currentSearch = val.toLowerCase();
+  renderList();
+}
+
+loadLog(); // reads from embedded LOG_DATA above
+</script>
+</body>
+</html>
