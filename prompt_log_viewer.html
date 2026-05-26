@@ -165,6 +165,86 @@ const LOG_DATA = [
     "date": "2026-05-25",
     "time": "auto",
     "summary": "Updated require('canvas') to require('@napi-rs/canvas') across the project to use the pre-built Windows-compatible package"
+  },
+  {
+    "id": 8,
+    "label": "Explanation",
+    "title": "scenes.js — Purpose, Logic & Flowchart",
+    "date": "2026-05-25",
+    "time": "auto",
+    "summary": "Asked for an explanation of scenes.js similar to the ingest.js breakdown — covering purpose, FFmpeg scene filter, stderr parsing, threshold, and output format"
+  },
+  {
+    "id": 9,
+    "label": "Explanation",
+    "title": "scenes.js — Re-explained in Plain Text with Flowchart",
+    "date": "2026-05-25",
+    "time": "auto",
+    "summary": "Same explanation as #8 but in plain Claude format with inline SVG flowchart only — no HTML file created"
+  },
+  {
+    "id": 10,
+    "label": "Error",
+    "title": "scenes.js — detectScenes() Returns Only [{start:0, end:Infinity}]",
+    "date": "2026-05-25",
+    "time": "auto",
+    "summary": "Two causes: (1) /dev/null doesn't exist on Windows — fixed by changing to NUL. (2) Default threshold 0.3 too strict for footage with gradual changes — lowering to 0.1 resolved it. Advised stepping up slowly to find the right value."
+  },
+  {
+    "id": 11,
+    "label": "Explanation",
+    "title": "Orchestrator Prompt Additions — Points 3 & 4 (Auto-Suggest + Doodle Input)",
+    "date": "2026-05-25",
+    "time": "auto",
+    "summary": "Explained what to add to the Claude orchestrator system prompt to support auto-suggestion of additional editing techniques (Point 3) and doodle/stickman theme input wiring (Point 4)"
+  },
+  {
+    "id": 12,
+    "label": "Explanation",
+    "title": "pacing.js — Purpose, Logic & Flowchart",
+    "date": "2026-05-25",
+    "time": "auto",
+    "summary": "Explained pacing.js: reads scene timestamps from detectScenes(), computes avgCutSeconds, variance (std deviation), and assigns a style label (fast-cut / medium / cinematic) to enable editing pace cloning from sample videos"
+  },
+  {
+    "id": 13,
+    "label": "Explanation",
+    "title": "colorgrade.py — Purpose, Logic & Flowchart",
+    "date": "2026-05-25",
+    "time": "auto",
+    "summary": "Explained colorgrade.py: samples 30 frames from a video, converts each to LAB colour space, computes brightness (L channel) and warmth (B channel − 128), then recommends a LUT file (warm_cinematic / cool_clean / neutral_grade) for FFmpeg to apply to the main video"
+  },
+  {
+    "id": 14,
+    "label": "Explanation",
+    "title": "Week 2 Milestone — How to Test Style Analyser (analyseSamples)",
+    "date": "2026-05-25",
+    "time": "auto",
+    "summary": "Explained how to test Week 2: prerequisites (pip install opencv-python, sample video in input/), test node one-liner, expected JSON output, multi-sample usage, and common errors (python path, cv2 not found, JSON parse error)"
+  },
+  {
+    "id": 15,
+    "label": "Error",
+    "title": "analyser.js — Missing src/utils.js (execP not found)",
+    "date": "2026-05-25",
+    "time": "auto",
+    "summary": "analyser.js requires execP from '../utils' but the file didn't exist. Fixed by creating src/utils.js with a promisified wrapper around child_process.exec"
+  },
+  {
+    "id": 16,
+    "label": "Error",
+    "title": "colorgrade.py — File Not Found + analyse vs analyze Spelling Mismatch",
+    "date": "2026-05-25",
+    "time": "auto",
+    "summary": "Two issues: (1) colorgrade.py had not been created on disk yet. (2) analyser.js hardcoded 'src/analyse/' but user's folder is named 'src/analyze/' (American spelling). Fixed by creating the file and updating the path in analyzer.js"
+  },
+  {
+    "id": 17,
+    "label": "Error",
+    "title": "analyseSamples — avgCutSeconds: null (Infinity from single-scene detection)",
+    "date": "2026-05-25",
+    "time": "auto",
+    "summary": "avgCutSeconds was null because detectScenes() returned only [{start:0,end:Infinity}] with default threshold 0.3. JSON.stringify(Infinity) produces null. Fixed by lowering threshold to 0.1 in pacing.js and adding isFinite(d) guard to duration filter"
   }
 ];
 // ─────────────────────────────────────────────────────────────────────────────

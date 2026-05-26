@@ -96,6 +96,46 @@
     "summary": "Explained pacing.js: reads scene timestamps from detectScenes(), computes avgCutSeconds, variance (std deviation), and assigns a style label (fast-cut / medium / cinematic) to enable editing pace cloning from sample videos"
   },
   {
+    "id": 22,
+    "label": "Error",
+    "title": "orchestrate.js — Gemini Skipping doodleInstructions, autoSuggestions, captionStyle",
+    "date": "2026-05-26",
+    "time": "auto",
+    "summary": "Gemini returned incomplete JSON — doodleInstructions and autoSuggestions were missing, captionStyle was empty. Fixed by adding responseSchema with SchemaType definitions and a required array to force all fields in every response."
+  },
+  {
+    "id": 21,
+    "label": "Changes",
+    "title": "orchestrate.js — Switch to Google Gemini 1.5 Flash (Free, No Payment Needed)",
+    "date": "2026-05-26",
+    "time": "auto",
+    "summary": "Replaced OpenAI with Google Gemini 1.5 Flash as the orchestrator LLM. Free tier via Google AI Studio, no credit card required. Used @google/generative-ai SDK with responseMimeType: application/json for reliable JSON output. Prompt unchanged."
+  },
+  {
+    "id": 20,
+    "label": "Explanation",
+    "title": "orchestrate.js — How to Test generateEditPlan()",
+    "date": "2026-05-26",
+    "time": "auto",
+    "summary": "Explained how to test orchestrate.js: node one-liner with dummy scenes, real Week 2 style profile, theme/effects/doodleTheme inputs. Covered expected JSON output shape and common errors (missing openai package, bad API key, JSON parse error, config.json path)"
+  },
+  {
+    "id": 19,
+    "label": "Changes",
+    "title": "orchestrate.js — Use OpenAI (GPT-4o) Instead of Anthropic Temporarily",
+    "date": "2026-05-26",
+    "time": "auto",
+    "summary": "Rewrote orchestrate.js to use OpenAI SDK (gpt-4o) as a temporary replacement while Anthropic API key is unavailable. Config key changed to openaiKey. Full prompt retained including Auto-Suggestion Rule and Doodle Instructions. Easy swap back to Anthropic when key is ready."
+  },
+  {
+    "id": 18,
+    "label": "Explanation",
+    "title": "orchestrate.js — Where to Add Auto-Suggestion Rule in the Prompt",
+    "date": "2026-05-26",
+    "time": "auto",
+    "summary": "Explained that the Auto-Suggestion Rule belongs inside the prompt template string in generateEditPlan(), after the style profile block and before the JSON structure example. Also explained why it goes there — Claude has no memory between calls so all instructions must be in the single message."
+  },
+  {
     "id": 17,
     "label": "Error",
     "title": "analyseSamples — avgCutSeconds: null (Infinity from single-scene detection)",
