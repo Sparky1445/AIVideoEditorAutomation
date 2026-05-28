@@ -13,71 +13,71 @@ function exportSchema() {
 
 
     const editPlanSchema = {
-        type: SchemaType.OBJECT,
+        type: "object",
         properties: {
-            keepScenes: { type: SchemaType.ARRAY, items: { type: SchemaType.NUMBER } },
-            cutOrder: { type: SchemaType.ARRAY, items: { type: SchemaType.NUMBER } },
+            keepScenes: { type: "array", items: { type: "number" } },
+            cutOrder: { type: "array", items: { type: "number" } },
             transitions: {
-                type: SchemaType.ARRAY, items: {
-                    type: SchemaType.OBJECT,
+                type: "array", items: {
+                    type: "object",
                     properties: {
-                        type: { type: SchemaType.STRING },
-                        durationMs: { type: SchemaType.NUMBER }
+                        type: { type: "string" },
+                        durationMs: { type: "number" }
                     }
                 }
             },
-            colorGrade: { type: SchemaType.STRING },
-            captionStyle: { type: SchemaType.STRING },
-            musicBeatSync: { type: SchemaType.BOOLEAN },
+            colorGrade: { type: "string" },
+            captionStyle: { type: "string" },
+            musicBeatSync: { type: "boolean" },
             doodleAnnotations: {
-                type: SchemaType.ARRAY, items: {
-                    type: SchemaType.OBJECT,
+                type: "array", items: {
+                    type: "object",
                     properties: {
-                        atSecond: { type: SchemaType.NUMBER },
-                        type: { type: SchemaType.STRING },
-                        label: { type: SchemaType.STRING },
-                        x: { type: SchemaType.NUMBER },
-                        y: { type: SchemaType.NUMBER }
+                        atSecond: { type: "number" },
+                        type: { type: "string" },
+                        label: { type: "string" },
+                        x: { type: "number" },
+                        y: { type: "number" }
                     }
                 }
             },
             doodleInstructions: {
-                type: SchemaType.ARRAY, items: {
-                    type: SchemaType.OBJECT,
+                type: "array", items: {
+                    type: "object",
                     properties: {
-                        type: { type: SchemaType.STRING },
-                        timing: { type: SchemaType.NUMBER },
-                        duration: { type: SchemaType.NUMBER },
-                        position: { type: SchemaType.STRING },
-                        description: { type: SchemaType.STRING }
+                        type: { type: "string" },
+                        timing: { type: "number" },
+                        duration: { type: "number" },
+                        position: { type: "string" },
+                        description: { type: "string" }
                     }
                 }
             },
             zoomPunches: {
-                type: SchemaType.ARRAY, items: {
-                    type: SchemaType.OBJECT,
+                type: "array", items: {
+                    type: "object",
                     properties: {
-                        atSecond: { type: SchemaType.NUMBER },
-                        scale: { type: SchemaType.NUMBER },
-                        durationMs: { type: SchemaType.NUMBER }
+                        atSecond: { type: "number" },
+                        scale: { type: "number" },
+                        durationMs: { type: "number" }
                     }
                 }
             },
             autoSuggestions: {
-                type: SchemaType.ARRAY, items: {
-                    type: SchemaType.OBJECT,
+                type: "array", items: {
+                    type: "object",
                     properties: {
-                        technique: { type: SchemaType.STRING },
-                        reason: { type: SchemaType.STRING },
-                        applyAt: { type: SchemaType.ARRAY, items: { type: SchemaType.NUMBER } }
+                        technique: { type: "string" },
+                        reason: { type: "string" },
+                        applyAt: { type: "array", items: { type: "number" } }
                     }
                 }
             }
         },
         required: [
-            'keepScenes', 'cutOrder', 'transitions', 'colorGrade',
-            'captionStyle', 'musicBeatSync', 'doodleAnnotations',
-            'doodleInstructions', 'zoomPunches', 'autoSuggestions'
+            "keepScenes", "cutOrder", "transitions", "colorGrade",
+            "captionStyle", "musicBeatSync", "doodleAnnotations",
+            "doodleInstructions", "zoomPunches", "autoSuggestions"
         ]
     };
 

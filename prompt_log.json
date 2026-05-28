@@ -96,6 +96,38 @@
     "summary": "Explained pacing.js: reads scene timestamps from detectScenes(), computes avgCutSeconds, variance (std deviation), and assigns a style label (fast-cut / medium / cinematic) to enable editing pace cloning from sample videos"
   },
   {
+    "id": 26,
+    "label": "Changes",
+    "title": "AI_Video_Editor_Guide.html — Add doodleTheme to orchestrate.js & index.js",
+    "date": "2026-05-26",
+    "time": "auto",
+    "summary": "Updated guide: (1) Added doodleTheme = '' to generateEditPlan() signature. (2) Added DOODLE THEME line, Auto-Suggestion Rule, Doodle Instructions, and MANDATORY FIELDS block to the prompt. (3) Added doodleTheme: args.doodleTheme || '' to the generateEditPlan call in index.js CLI entry point."
+  },
+  {
+    "id": 25,
+    "label": "Error",
+    "title": "orchestrate.js — doodleTheme is Not Defined",
+    "date": "2026-05-26",
+    "time": "auto",
+    "summary": "ReferenceError: doodleTheme is not defined. Cause: doodleTheme was missing from the function parameter destructuring. Fixed by adding doodleTheme = '' to the generateEditPlan({ ... }) signature."
+  },
+  {
+    "id": 24,
+    "label": "Error",
+    "title": "orchestrate.js — doodleInstructions & autoSuggestions Still Missing After Schema Fix",
+    "date": "2026-05-26",
+    "time": "auto",
+    "summary": "responseSchema was partially ignored by Gemini — captionStyle returned null, doodleInstructions and autoSuggestions still absent. Fixed by adding a MANDATORY FIELDS section directly in the prompt text explicitly naming each required field, its expected value, and stating null/empty arrays are not acceptable."
+  },
+  {
+    "id": 23,
+    "label": "Error",
+    "title": "orchestrate.js — SchemaType is Not Defined",
+    "date": "2026-05-26",
+    "time": "auto",
+    "summary": "SchemaType import failed — either missing from import line or old package version. Fixed by replacing all SchemaType.X references with plain string literals ('string', 'array', 'object', 'number', 'boolean') and removing SchemaType from the import entirely."
+  },
+  {
     "id": 22,
     "label": "Error",
     "title": "orchestrate.js — Gemini Skipping doodleInstructions, autoSuggestions, captionStyle",
